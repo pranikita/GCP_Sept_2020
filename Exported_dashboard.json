@@ -1,0 +1,102 @@
+{
+  "displayName": "VM_Metrics_Monitor",
+  "etag": "3f3c9d35059963ff4de91964947e1d69",
+  "gridLayout": {
+    "columns": "2",
+    "widgets": [
+      {
+        "title": "VM_CPU_Memory_Usage",
+        "xyChart": {
+          "chartOptions": {
+            "mode": "COLOR"
+          },
+          "dataSets": [
+            {
+              "legendTemplate": "${metric.labels.instance_name}",
+              "minAlignmentPeriod": "300s",
+              "plotType": "STACKED_AREA",
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "alignmentPeriod": "300s",
+                    "crossSeriesReducer": "REDUCE_MEAN",
+                    "groupByFields": [
+                      "metric.label.\"instance_name\""
+                    ],
+                    "perSeriesAligner": "ALIGN_MEAN"
+                  },
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\" resource.label.\"project_id\"=\"learned-falcon-298509\"",
+                  "secondaryAggregation": {
+                    "alignmentPeriod": "300s",
+                    "crossSeriesReducer": "REDUCE_MAX"
+                  }
+                },
+                "unitOverride": "ratio"
+              }
+            },
+            {
+              "minAlignmentPeriod": "120s",
+              "plotType": "STACKED_AREA",
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "alignmentPeriod": "120s",
+                    "crossSeriesReducer": "REDUCE_MAX",
+                    "perSeriesAligner": "ALIGN_MEAN"
+                  },
+                  "filter": "metric.type=\"compute.googleapis.com/guest/memory/anonymous_used\" resource.type=\"gce_instance\" resource.label.\"instance_id\"=\"\""
+                },
+                "unitOverride": "By"
+              }
+            }
+          ],
+          "timeshiftDuration": "0s",
+          "yAxis": {
+            "label": "y1Axis",
+            "scale": "LINEAR"
+          }
+        }
+      },
+      {
+        "scorecard": {
+          "gaugeView": {
+            "upperBound": 100.0
+          },
+          "thresholds": [
+            {
+              "color": "RED",
+              "direction": "ABOVE",
+              "value": 400.0
+            },
+            {
+              "color": "YELLOW",
+              "direction": "ABOVE",
+              "value": 200.0
+            },
+            {
+              "color": "YELLOW",
+              "direction": "BELOW",
+              "value": 100.0
+            }
+          ],
+          "timeSeriesQuery": {
+            "timeSeriesFilter": {
+              "aggregation": {
+                "alignmentPeriod": "60s",
+                "perSeriesAligner": "ALIGN_RATE"
+              },
+              "filter": "metric.type=\"agent.googleapis.com/interface/traffic\" resource.type=\"gce_instance\"",
+              "secondaryAggregation": {
+                "alignmentPeriod": "60s",
+                "crossSeriesReducer": "REDUCE_MAX",
+                "perSeriesAligner": "ALIGN_MAX"
+              }
+            }
+          }
+        },
+        "title": "Network"
+      }
+    ]
+  },
+  "name": "projects/498911121636/dashboards/3fe35f06-ea03-43a0-b553-efdfb250d382"
+}
